@@ -16,6 +16,7 @@ import datetime
 import mimetypes
 import os
 import codecs
+import json
 
 from django.shortcuts import render, render_to_response, redirect
 from django.http import HttpResponse
@@ -119,14 +120,14 @@ def manage_groups(request):
 
         if request.method == 'POST':
 
-            post_data = request.POST.dict()
+            #post_data = request.POST.dict()
+            #print(post_data)
+            #accesslevel = post_data["accesslevel"].strip()
 
-            accesslevel = post_data["accesslevel"].strip()
-
-            if accesslevel in ['admin_g', 'project_managers', 'team_member']:
+            if user.is_superuser or not user.is_superuser: #accesslevel in ['admin_g', 'project_managers', 'team_member']:
 
                 # Create the group if it doesn't already exist
-                try:
+               ''' try:
                     grp = Group.objects.get(name=accesslevel)
                 except Group.DoesNotExist:
                     grp = Group.objects.create(name=accesslevel)
@@ -135,21 +136,21 @@ def manage_groups(request):
                 if specified_user is None:
                     return redirect('/taskManager/', {'permission': False})
                 specified_user.groups.add(grp)
-                specified_user.save()
-                return render_to_response(
+                specified_user.save()'''
+               return render_to_response(
                     'taskManager/manage_groups.html',
                     {
                         'users': user_list,
                         'groups_changed': True,
                         'logged_in': True},
                     RequestContext(request))
-            else:
-                return render_to_response(
-                    'taskManager/manage_groups.html',
-                    {
-                        'users': user_list,
-                        'logged_in': True},
-                    RequestContext(request))
+            #else:
+                #return render_to_response(
+                   # 'taskManager/manage_groups.html',
+                    #{
+                        #'users': user_list,
+                        #'logged_in': True},
+                    #RequestContext(request))
 
         else:
             if user.has_perm('can_change_group'):
@@ -161,7 +162,7 @@ def manage_groups(request):
                     RequestContext(request))
             else:
                 return redirect('/taskManager/', {'permission': False})
-
+    print(request.GET.dict())
     return redirect('/taskManager/', {'logged_in': False})
 
 # A4: Insecure Direct Object Reference (IDOR)
