@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, serialize=False, verbose_name='ID', primary_key=True)),
                 ('name', models.CharField(max_length=300, default='')),
                 ('path', models.CharField(max_length=3000, default='')),
-                ('project', models.ForeignKey(to='taskManager.Project')),
+                ('project', models.ForeignKey(to='taskManager.Project', on_delete=models.DO_NOTHING)),
             ],
             options={
             },

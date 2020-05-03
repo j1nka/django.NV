@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='project',
             name='user',
-            field=models.ForeignKey(to=settings.AUTH_USER_MODEL, default=1, editable=False),
+            field=models.ForeignKey(to=settings.AUTH_USER_MODEL, default=1, editable=False, on_delete=models.DO_NOTHING),
             preserve_default=True,
         ),
     ]

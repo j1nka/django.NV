@@ -12,11 +12,14 @@
 # from django.nV for use in another web application!
 #
 
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 
 from taskManager import views
+from django.contrib import admin
 
-urlpatterns = patterns('',
+app_name = 'taskManager'
+
+urlpatterns = [
                        url(r'^$', views.index, name='index'),
 
                        # File
@@ -94,4 +97,4 @@ urlpatterns = patterns('',
 
                        # Settings - DEBUG
                        url(r'^settings/$', views.tm_settings, name='settings'),
-                      )
+            ]

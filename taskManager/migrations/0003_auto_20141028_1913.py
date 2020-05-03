@@ -18,8 +18,8 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
                 ('comment_text', models.CharField(max_length=200)),
-                ('task', models.ForeignKey(to='taskManager.Task')),
-                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, default=1)),
+                ('task', models.ForeignKey(to='taskManager.Task', on_delete=models.DO_NOTHING)),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, default=1, on_delete=models.DO_NOTHING)),
             ],
             options={
             },

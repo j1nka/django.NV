@@ -120,13 +120,13 @@
                         <ul class="nav nav-pills nav-stacked labels-info ">
                           {% if proj.priority == 1 %}
                             <li><i class=" fa fa-circle text-primary"></i> Low Priority</li>
-                          {% elif proj.priority = 2 %}
+                          {% elif proj.priority == 2 %}
                             <li><i class=" fa fa-circle text-success"></i> Medium Priority</li>
-                          {% elif proj.priority = 3 %}
+                          {% elif proj.priority == 3 %}
                             <li><i class=" fa fa-circle text-danger"></i> High Priority</li>
-                          {% elif proj.priority = 4 %}
+                          {% elif proj.priority == 4 %}
                             <li class="text-danger"><i class="fa fa-circle"></i> Urgent Priority</li>
-                          {% elif proj.priority = 5 %}
+                          {% elif proj.priority == 5 %}
                             <li class="text-danger"><strong><i class=" fa fa-circle"></i> SUPER URGENT Priority</strong></li>
                           {% else %}
                             <li><i class=" fa fa-circle text-muted"></i> No Priority</li>
@@ -135,11 +135,27 @@
 
                         <br/>
                         <h5 class="bold">Files</h5>
-                          <span class="p-team">
+                             <table class="table table-hover p-table">
+                             <thead>
+                             <tr>
+                                  <th>File Name</th>
+                                  <th>File Path</th>
+                              </tr>
+                              </thead>
+                              <tbody>
                               {% for u in proj.file_set.all %}
-                                <a href="{% url 'taskManager:download' file_id=u.id %}"><i class="fa fa-paperclip"></i> {{u.name}}</a><br />
+                                <tr>
+                                    <td>
+                                        <a href="{% url 'taskManager:download' file_id=u.id %}"><i class="fa fa-paperclip"></i> {{u.name}}</a><br/>
+                                    </td>
+                                     <td>
+						                 {{u.path}}
+                                     </td>
+
+                                 </tr>
                               {% endfor %}
-                          </span>
+                             </tbody>
+                             </table>
                         
                         <div class="text-center mtop20">
                             <a href="{% url 'taskManager:upload' proj.id %}" class="btn btn-sm btn-primary">Add files</a>

@@ -75,7 +75,7 @@ def manage_projects(request):
 
     user = request.user
 
-    if user.is_authenticated():
+    if user.is_authenticated:
         logged_in = True
 
         if user.has_perm('can_change_group'):
@@ -113,7 +113,7 @@ def manage_groups(request):
 
     user = request.user
 
-    if user.is_authenticated():
+    if user.is_authenticated:
 
         user_list = User.objects.order_by('date_joined')
 
@@ -174,15 +174,23 @@ def upload(request, project_id):
         proj = Project.objects.get(pk=project_id)
         form = ProjectFileForm(request.POST, request.FILES)
 
+        print("1")
+        print(form.errors)
+
         if form.is_valid():
             name = request.POST.get('name', False)
             upload_path = store_uploaded_file(name, request.FILES['file'])
+
+            print(name)
+            print(upload_path)
 
             #A1 - Injection (SQLi)
             curs = connection.cursor()
             curs.execute(
                 "insert into taskManager_file ('name','path','project_id') values ('%s','%s',%s)" %
                 (name, upload_path, project_id))
+
+            print("3")
 
             # file = File(
             #name = name,
@@ -194,8 +202,10 @@ def upload(request, project_id):
             return redirect('/taskManager/' + project_id +
                             '/', {'new_file_added': True})
         else:
+            print("4")
             form = ProjectFileForm()
     else:
+        print("5")
         form = ProjectFileForm()
     return render_to_response(
         'taskManager/upload.html', {'form': form}, RequestContext(request))
@@ -206,11 +216,12 @@ def upload(request, project_id):
 def download(request, file_id):
 
     file = File.objects.get(pk=file_id)
-    abspath = open(
-        os.path.dirname(
-            os.path.realpath(__file__)) +
-        file.path,
-        'rb')
+    #abspath = open(
+        #os.path.dirname(
+            #os.path.realpath(__file__)) +
+        #file.path,
+        #'rb')
+    abspath = open(os.path.dirname(os.path.realpath(__file__)) + file.path, 'rb')
     response = HttpResponse(content=abspath.read())
     response['Content-Type'] = mimetypes.guess_type(file.path)[0]
     response['Content-Disposition'] = 'attachment; filename=%s' % file.name
@@ -336,7 +347,7 @@ def project_create(request):
                           due_date=project_duedate,
                           start_date=now)
         project.save()
-        project.users_assigned = [request.user.id]
+        project.users_assigned.set([request.user.id]) # = [request.user.id]
 
         return redirect('/taskManager/', {'new_project_added': True})
     else:
@@ -383,8 +394,13 @@ def project_delete(request, project_id):
 
 
 def logout_view(request):
+    #logout(request)
+    #return redirect(request.GET.get('redirect', '/taskManager/'))
     logout(request)
-    return redirect(request.GET.get('redirect', '/taskManager/'))
+    url =  request.GET.get('redirect')
+    if not url: url = '/taskManager/'
+    project_list = Project.objects.order_by('-start_date')
+    return redirect(url)
 
 
 def login(request):
@@ -476,7 +492,7 @@ def index(request):
         if(project.users_assigned.filter(username=request.user.username)).exists():
             list_to_show.append(project)
 
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         return redirect("/taskManager/dashboard")
     else:
         return render(
@@ -596,7 +612,7 @@ def task_details(request, project_id, task_id):
 
     logged_in = True
 
-    if not request.user.is_authenticated():
+    if not request.user.is_authenticated:
         logged_in = False
 
     admin_level = False

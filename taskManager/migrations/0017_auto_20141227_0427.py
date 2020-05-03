@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='notes',
             name='task',
-            field=models.ForeignKey(default=1, to='taskManager.Task'),
+            field=models.ForeignKey(default=1, to='taskManager.Task',on_delete=models.DO_NOTHING),
             preserve_default=True,
         ),
     ]

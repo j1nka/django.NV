@@ -37,7 +37,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(serialize=False, auto_created=True, verbose_name='ID', primary_key=True)),
                 ('task_text', models.CharField(max_length=200)),
                 ('pub_date', models.DateTimeField(verbose_name='date created')),
-                ('assoc_project', models.ForeignKey(to='taskManager.Project', default=1)),
+                ('assoc_project', models.ForeignKey(to='taskManager.Project', default=1,on_delete=models.DO_NOTHING)),
             ],
             options={
             },
@@ -58,7 +58,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='comment',
             name='task',
-            field=models.ForeignKey(to='taskManager.Task'),
+            field=models.ForeignKey(to='taskManager.Task', on_delete=models.DO_NOTHING),
             preserve_default=True,
         ),
     ]

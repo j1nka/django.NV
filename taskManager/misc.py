@@ -23,19 +23,27 @@ import os
 
 def store_uploaded_file(title, uploaded_file):
     """ Stores a temporary uploaded file on disk """
-    upload_dir_path = '%s/static/taskManager/uploads' % (
-        os.path.dirname(os.path.realpath(__file__)))
+    upload_dir_path = '{}\\static\\taskManager\\uploads'.format(os.path.dirname(os.path.realpath(__file__)))
+
     if not os.path.exists(upload_dir_path):
         os.makedirs(upload_dir_path)
 
     # A1: Injection (shell)
     # Let's avoid the file corruption race condition!
-    os.system(
+    '''os.system(
         "mv " +
+        uploaded_file.temporary_file_path() +
+        " " +
+        "%s/%s" %
+        (upload_dir_path,
+         title))'''
+
+    os.system(
         uploaded_file.temporary_file_path() +
         " " +
         "%s/%s" %
         (upload_dir_path,
          title))
 
-    return '/static/taskManager/uploads/%s' % (title)
+    #return '/static/taskManager/uploads/%s' % (title)
+    return upload_dir_path + '\\{}'.format(title)

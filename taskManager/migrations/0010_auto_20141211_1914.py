@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
                 ('note_text', models.CharField(max_length=200)),
-                ('task', models.ForeignKey(to='taskManager.Task')),
+                ('task', models.ForeignKey(to='taskManager.Task', on_delete=models.DO_NOTHING), ),
             ],
             options={
             },
